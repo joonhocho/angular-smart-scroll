@@ -5,8 +5,8 @@ Smart infinite scroll directive for Angular.js that is customizable to support n
 [![Build Status][Build Status img]][Build Status]
 [![Dependency Status][Dependency Status img]][Dependency Status]
 [![Coverage Status][Coverage Status img]][Coverage Status]
+[![githalytics.com alpha][Git Anlytics img]][Git Anlytics]
 <!-- [![Code Climate][Code Climate img]][Code Climate] -->
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/fda90a3a2ce7e9e7339348f8b505945f "githalytics.com")](http://githalytics.com/joonho1101/angular-smart-scroll)
 
 ## Smart Infinite Scroll for AngularJS
 [View examples!][Examples]
@@ -88,6 +88,9 @@ Copyright (c) 2014 Joon Ho Cho
 
 [Coverage Status]: https://coveralls.io/r/joonho1101/angular-smart-scroll
 [Coverage Status img]: https://coveralls.io/repos/joonho1101/angular-smart-scroll/badge.png
+
+[Git Anlytics]: http://githalytics.com/joonho1101/angular-smart-scroll
+[Git Anlytics img]: https://cruel-carlota.pagodabox.com/fda90a3a2ce7e9e7339348f8b505945f
 
 [Examples]: http://htmlpreview.github.io/?https://github.com/joonho1101/angular-smart-scroll/blob/master/examples/index.html
 
