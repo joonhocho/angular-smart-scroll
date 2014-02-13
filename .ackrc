@@ -1,0 +1,5 @@
+--ignore-dir=node_modules
+--ignore-dir=bower_components
+--ignore-dir=dist
+--ignore-dir=coverage
+--ignore-file=match:/.*.min.(js|css)$/
