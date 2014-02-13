@@ -4,8 +4,8 @@ Infinite scroll directive for Angular.js
 
 [![Build Status][Build Status img]][Build Status]
 [![Dependency Status][Dependency Status img]][Dependency Status]
-<!-- [![Code Climate][Code Climate img]][Code Climate] -->
 [![Coverage Status][Coverage Status img]][Coverage Status]
+<!-- [![Code Climate][Code Climate img]][Code Climate] -->
 
 
 # Infinite Scroll for AngularJS
