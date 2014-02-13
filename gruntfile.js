@@ -61,10 +61,11 @@ module.exports = function (grunt) {
 
 		karma: {
 			options: {
+				singleRun: true,
 				configFile: '<%= v.test %>/<%= v.karmaConfig %>'
 			},
 			test: {
-				singleRun: true
+				// default
 			},
 			dev: {
 				singleRun: false
@@ -81,7 +82,6 @@ module.exports = function (grunt) {
 				}
 			},
 			travis: {
-				singleRun: true,
 				reporters: ['dots', 'coverage'],
 				browsers: ['PhantomJS'],
 				preprocessors: {
@@ -103,12 +103,13 @@ module.exports = function (grunt) {
 		},
 
 		watch: {
-			jshint: {
-				options: {
-					event: ['added', 'changed']
-				},
+			build: {
+				files: ['<%= v.srcJs %>'],
+				tasks: ['concat', 'uglify']
+			},
+			test: {
 				files: ['<%= v.srcJs %>', '<%= v.testJs %>'],
-				tasks: ['jshint']
+				tasks: ['test']
 			},
 			livereload: {
 				files: ['<%= v.distJs %>']
@@ -117,7 +118,7 @@ module.exports = function (grunt) {
 	});
 
 	// Run default tasks
-	grunt.registerTask('default', 'Run default tasks', ['build', 'dev']);
+	grunt.registerTask('default', 'Run default tasks', ['build', 'test']);
 
 	// Build files for production
 	grunt.registerTask('build', 'Builds files for production', ['clean', 'jshint:build', 'concat', 'uglify']);
