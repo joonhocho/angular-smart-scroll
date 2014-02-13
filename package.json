@@ -8,7 +8,8 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "grunt travis"
+    "test": "grunt travis",
+    "postinstall": "node node_modules/bower/bin/bower install"
   },
   "repository": {
     "type": "git",
@@ -32,7 +33,9 @@
   },
   "homepage": "https://github.com/joonho1101/angular-infinite-scroll",
   "devDependencies": {
+    "bower": "~1.2.8",
     "grunt": "~0.4.2",
+    "grunt-cli": "~0.1.13",
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-uglify": "~0.3.2",
     "grunt-contrib-clean": "~0.5.0",

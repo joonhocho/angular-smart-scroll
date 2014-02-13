@@ -28,7 +28,7 @@ module.exports = function (grunt) {
 
 		jshint: {
 			options: grunt.file.readJSON('.jshintrc'),
-			src: {
+			build: {
 				src: ['<%= v.srcJs %>']
 			},
 			test: {
@@ -64,7 +64,7 @@ module.exports = function (grunt) {
 				configFile: '<%= v.test %>/<%= v.karmaConfig %>'
 			},
 			test: {
-				// Use defaults
+				singleRun: true
 			},
 			dev: {
 				singleRun: false
@@ -116,8 +116,14 @@ module.exports = function (grunt) {
 		}
 	});
 
+	// Run default tasks
+	grunt.registerTask('default', 'Run default tasks', ['build', 'dev']);
+
+	// Build files for production
+	grunt.registerTask('build', 'Builds files for production', ['clean', 'jshint:build', 'concat', 'uglify']);
+
 	// Run tests, single pass
-	grunt.registerTask('test', 'Run unit tests', ['karma:test']);
+	grunt.registerTask('test', 'Run unit tests', ['jshint', 'karma:test']);
 
 	// Run tests continously for development mode
 	grunt.registerTask('dev', 'Run unit tests in watch mode', ['karma:dev']);
@@ -125,9 +131,6 @@ module.exports = function (grunt) {
 	// Generate a coverage report in Cobertura format
 	grunt.registerTask('cobertura', 'Generate Cobertura coverage report', ['karma:cobertura']);
 
-	// Build files for production
-	grunt.registerTask('build', 'Builds files for production', ['concat:build', 'uglify:build']);
-
 	// Travis CI task
-	grunt.registerTask('travis', 'Travis CI task', ['karma:travis', 'coveralls']);
+	grunt.registerTask('travis', 'Travis CI task', ['clean', 'jshint', 'karma:travis', 'coveralls']);
 };
