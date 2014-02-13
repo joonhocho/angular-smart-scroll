@@ -19,6 +19,7 @@ module.exports = function (grunt) {
 			src: 'src',
 			srcJs: '<%= v.src %>/**/*.js',
 			dist: 'dist',
+			distJs: '<%= v.dist %>/**/*.js',
 			test: 'tests',
 			testJs: '<%= v.test %>/**/*.js',
 			karmaConfig: 'karma.conf.js',
@@ -103,8 +104,14 @@ module.exports = function (grunt) {
 
 		watch: {
 			jshint: {
-				files: ['<%= path.client.css %>'],
-				tasks: ['stylus:dev']
+				options: {
+					event: ['added', 'changed']
+				},
+				files: ['<%= v.srcJs %>', '<%= v.testJs %>'],
+				tasks: ['jshint']
+			},
+			livereload: {
+				files: ['<%= v.distJs %>']
 			}
 		}
 	});
