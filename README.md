@@ -2,9 +2,10 @@ angular-infinite-scroll
 =======================
 Infinite scroll directive for Angular.js
 
-[![Build Status](https://travis-ci.org/joonho1101/angular-infinite-scroll.png)](https://travis-ci.org/joonho1101/angular-infinite-scroll)
-[![Dependency Status](https://gemnasium.com/joonho1101/angular-infinite-scroll.png)](https://gemnasium.com/joonho1101/angular-infinite-scroll)
-[![Coverage Status](https://coveralls.io/repos/joonho1101/angular-infinite-scroll/badge.png)](https://coveralls.io/r/joonho1101/angular-infinite-scroll)
+[![Build Status][Build Status img]][Build Status]
+[![Dependency Status][Dependency Status img]][Dependency Status]
+[![Code Climate][Code Climate img]][Code Climate]
+[![Coverage Status][Coverage Status img]][Coverage Status]
 
 
 # Infinite Scroll for AngularJS
@@ -75,3 +76,15 @@ Feel free to create a pull request with unit tests with 100% code coverage!
 (The MIT License)
 
 Copyright (c) 2014 Joon Ho Cho
+
+[Build Status]: https://travis-ci.org/joonho1101/angular-infinite-scroll
+[Build Status img]: https://travis-ci.org/joonho1101/angular-infinite-scroll.png
+
+[Dependency Status]: https://gemnasium.com/joonho1101/angular-infinite-scroll
+[Dependency Status img]: https://gemnasium.com/joonho1101/angular-infinite-scroll.png
+
+[Code Climate]: https://codeclimate.com/github/joonho1101/angular-infinite-scroll
+[Code Climate img]: https://codeclimate.com/github/joonho1101/angular-infinite-scroll.png
+
+[Coverage Status]: https://coveralls.io/r/joonho1101/angular-infinite-scroll
+[Coverage Status img]: https://coveralls.io/repos/joonho1101/angular-infinite-scroll/badge.png
