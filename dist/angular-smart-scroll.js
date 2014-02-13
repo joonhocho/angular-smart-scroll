@@ -1,3 +1,4 @@
+/*! angular-smart-scroll - v0.0.1 - 2014-02-13 */
 /* global angular */
 angular.module('infinite-scroll', [])
 
