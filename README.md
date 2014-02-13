@@ -4,12 +4,12 @@ Infinite scroll directive for Angular.js
 
 [![Build Status][Build Status img]][Build Status]
 [![Dependency Status][Dependency Status img]][Dependency Status]
-[![Code Climate][Code Climate img]][Code Climate]
+<!-- [![Code Climate][Code Climate img]][Code Climate] -->
 [![Coverage Status][Coverage Status img]][Coverage Status]
 
 
 # Infinite Scroll for AngularJS
-[View examples!](http://htmlpreview.github.io/?https://github.com/joonho1101/angular-infinite-scroll/blob/master/examples/index.html)
+[View examples!][Examples]
 
 
 ## Getting Started
@@ -28,14 +28,14 @@ And add the module `jn.infiniteScroll` to your app's dependencies:
 
 
 ### Required
-* AngularJS ([https://github.com/angular/angular.js](https://github.com/angular/angular.js))
-* jQuery ([https://github.com/jquery/jquery](https://github.com/jquery/jquery))
+* AngularJS ([https://github.com/angular/angular.js][Angular.js])
+* jQuery ([https://github.com/jquery/jquery][jQuery])
 
 
 ### Optional
 * For `_.throttle` support
-  * Underscore ([https://github.com/jashkenas/underscore](https://github.com/jashkenas/underscore))
-  * or Lodash ([https://github.com/lodash/lodash](https://github.com/lodash/lodash))
+  * Underscore ([https://github.com/jashkenas/underscore][Underscore])
+  * or Lodash ([https://github.com/lodash/lodash][Lodash])
 
 
 ## Development
@@ -88,3 +88,10 @@ Copyright (c) 2014 Joon Ho Cho
 
 [Coverage Status]: https://coveralls.io/r/joonho1101/angular-infinite-scroll
 [Coverage Status img]: https://coveralls.io/repos/joonho1101/angular-infinite-scroll/badge.png
+
+[Examples]: http://htmlpreview.github.io/?https://github.com/joonho1101/angular-infinite-scroll/blob/master/examples/index.html
+
+[Angular.js]: https://github.com/angular/angular.js
+[jQuery]: https://github.com/jquery/jquery
+[Underscore]: https://github.com/jashkenas/underscore
+[Lodash]: https://github.com/lodash/lodash
