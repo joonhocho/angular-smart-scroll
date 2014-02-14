@@ -1,7 +1,7 @@
-'use strict';
-
 /* jshint node: true */
 module.exports = function (grunt) {
+	'use strict';
+
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-clean');
@@ -47,6 +47,9 @@ module.exports = function (grunt) {
 		},
 
 		uglify: {
+			options: {
+				preserveComments: 'some'
+			},
 			build: {
 				src: ['<%= concat.build.dest %>'],
 				dest: '<%= v.dist %>/<%= v.name %>.min.js'

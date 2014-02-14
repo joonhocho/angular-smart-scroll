@@ -1,7 +1,7 @@
 /* global angular */
-angular.module('infinite-scroll', [])
+angular.module('jun.smartScroll', [])
 
-.directive('infiniteScroll', [
+.directive('smartScroll', [
 	'$rootScope', '$window', '$timeout',
 	function ($rootScope, $window, $timeout) {
 		'use strict';
