@@ -77,7 +77,6 @@ module.exports = function (grunt) {
 				reporters: ['story', 'coverage']
 			},
 			cobertura: {
-				reporters: ['dots', 'coverage'],
 				browsers: ['PhantomJS'],
 				coverageReporter: {
 					type: 'cobertura',
@@ -85,11 +84,7 @@ module.exports = function (grunt) {
 				}
 			},
 			travis: {
-				reporters: ['dots', 'coverage'],
 				browsers: ['PhantomJS'],
-				preprocessors: {
-					'<%= v.srcJs %>': 'coverage'
-				},
 				coverageReporter: {
 					type: 'lcov',
 					dir: '<%= v.coverage %>/'
@@ -136,5 +131,5 @@ module.exports = function (grunt) {
 	grunt.registerTask('cobertura', 'Generate Cobertura coverage report', ['karma:cobertura']);
 
 	// Travis CI task
-	grunt.registerTask('travis', 'Travis CI task', ['clean', 'jshint', 'karma:travis', 'coveralls']);
+	grunt.registerTask('travis', 'Travis CI task', ['clean', 'jshint', 'concat', 'uglify', 'karma:travis', 'coveralls']);
 };

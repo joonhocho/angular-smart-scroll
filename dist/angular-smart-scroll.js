@@ -1,4 +1,4 @@
-/*! angular-smart-scroll - v0.0.1 - 2014-02-13 */
+/*! angular-smart-scroll - v0.0.1 - 2014-02-14 */
 /* global angular */
 angular.module('jun.smartScroll', [])
 
@@ -9,7 +9,11 @@ angular.module('jun.smartScroll', [])
 		var $ = angular.element;
 
 		function hasScroll(el) {
-			return isValueScroll($.css(el, 'overflow')) || isValueScroll($.css(el, 'overflow-y'));
+			if (el.style) {
+				var $el = $(el);
+				return isValueScroll($el.css('overflow')) || isValueScroll($el.css('overflow-y'));
+			}
+			return false;
 		}
 
 		function isValueScroll(v) {
