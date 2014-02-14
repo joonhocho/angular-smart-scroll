@@ -4,8 +4,8 @@
   "description": "Smart infinite scroll directive for Angular.js that is customizable to support nested, horizontal, vertical, and/or bidirectional scrolls",
   "main": "src/angular-smart-scroll.js",
   "directories": {
-    "example": "examples",
-    "test": "tests"
+    "example": "example",
+    "test": "test"
   },
   "scripts": {
     "test": "grunt travis",
@@ -52,6 +52,10 @@
     "karma-phantomjs-launcher": "~0.1.2",
     "karma": "~0.10.9",
     "grunt-karma": "~0.6.2",
-    "grunt-karma-coveralls": "~2.3.0"
+    "grunt-karma-coveralls": "~2.3.0",
+    "karma-safari-launcher": "~0.1.1",
+    "karma-junit-reporter": "~0.2.1",
+    "karma-story-reporter": "~0.2.2",
+    "karma-coverage": "~0.1.5"
   }
 }

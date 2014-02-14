@@ -20,7 +20,7 @@ module.exports = function (grunt) {
 			srcJs: '<%= v.src %>/**/*.js',
 			dist: 'dist',
 			distJs: '<%= v.dist %>/**/*.js',
-			test: 'tests',
+			test: 'test',
 			testJs: '<%= v.test %>/**/*.js',
 			karmaConfig: 'karma.conf.js',
 			coverage: 'coverage'
