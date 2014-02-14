@@ -1,5 +1,5 @@
 /* jshint node: true, camelcase: false */
-/* global angular: true, inject: true, describe: true, it: true, beforeEach: true, afterEach: true, spyOn: true, expect: true */
+/* global angular, inject, describe, it, beforeEach, afterEach, spyOn, expect */
 describe('Module: jun.smartScroll', function () {
 	'use strict';
 
