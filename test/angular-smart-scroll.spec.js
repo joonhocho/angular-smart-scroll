@@ -46,6 +46,7 @@ describe('Module: jun.smartScroll', function () {
 
 		afterEach(function () {
 			el.remove();
+			scope.$destroy();
 		});
 
 		it('should call `next` callback on init if necessary', function () {
@@ -58,9 +59,12 @@ describe('Module: jun.smartScroll', function () {
 					'<div class="content"></div>' +
 					'</div>';
 			};
+
 			prepare();
+
 			spyOn(scope, 'getNext').andCallThrough();
 			expect(scope.getNext).not.toHaveBeenCalled();
+
 			$timeout.flush();
 			expect(scope.getNext).toHaveBeenCalled();
 		});
@@ -75,11 +79,61 @@ describe('Module: jun.smartScroll', function () {
 					'<div class="large-content"></div>' +
 					'</div>';
 			};
+
 			prepare();
+
 			spyOn(scope, 'getNext').andCallThrough();
 			expect(scope.getNext).not.toHaveBeenCalled();
+
 			$timeout.flush();
 			expect(scope.getNext).not.toHaveBeenCalled();
+		});
+	});
+
+	describe('`next` call', function () {
+
+		var getHtml,
+			initScope = function () {
+				scope.getNext = function () {};
+				scope.scrollDistance = 0;
+				scope.scrollDisabled = false;
+			};
+
+		function prepare() {
+			el = angular.element(getHtml()).appendTo($body);
+			content = el.find('.content');
+
+			scope = $rootScope.$new();
+			initScope();
+
+			$compile(el)(scope);
+			scope.$digest();
+		}
+
+		it('should call `next` on scroll only if past threshold', function () {
+			getHtml = function () {
+				return '<div class="scroller" smart-scroll' +
+					' scroll-next="getNext(scrollHeight, scrollTop, height, scrollBottom, remaining)"' +
+					' scroll-distance="scrollDistance"' +
+					' scroll-disabled="scrollDisabled"' +
+					'>' +
+					'<div class="large-content"></div>' +
+					'</div>';
+			};
+
+			prepare();
+
+			spyOn(scope, 'getNext').andCallThrough();
+			expect(scope.getNext).not.toHaveBeenCalled();
+
+			$timeout.flush();
+			expect(scope.getNext).not.toHaveBeenCalled();
+
+			el.scrollTop(5000);
+			expect(scope.getNext).not.toHaveBeenCalled();
+
+			el.scrollTop(10000);
+			expect(scope.getNext).toHaveBeenCalled();
 		});
 	});
 
@@ -105,6 +159,7 @@ describe('Module: jun.smartScroll', function () {
 
 		afterEach(function () {
 			el.remove();
+			scope.$destroy();
 		});
 
 		it('should not call `next` when disabled', function () {
@@ -117,9 +172,12 @@ describe('Module: jun.smartScroll', function () {
 					'<div class="content"></div>' +
 					'</div>';
 			};
+
 			prepare();
+
 			spyOn(scope, 'getNext').andCallThrough();
 			expect(scope.getNext).not.toHaveBeenCalled();
+
 			$timeout.flush();
 			expect(scope.getNext).not.toHaveBeenCalled();
 		});

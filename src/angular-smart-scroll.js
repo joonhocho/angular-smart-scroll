@@ -112,7 +112,7 @@ angular.module('jun.smartScroll', [])
 				scope.$watch('distance', onScroll);
 				scope.$watch('disabled', onScroll);
 
-				viewport.on('scroll', throttled);
+				viewport.scroll(throttled);
 
 				scope.$on('$destroy', function () {
 					viewport.off('scroll', throttled);
