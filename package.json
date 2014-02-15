@@ -8,8 +8,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "grunt travis",
-	"postinstall": "bower install"
+    "test": "./node_modules/grunt-cli/bin/grunt travis",
+    "postinstall": "./node_modules/bower/bin/bower install"
   },
   "repository": {
     "type": "git",
@@ -54,6 +54,8 @@
     "karma-safari-launcher": "~0.1.1",
     "karma-junit-reporter": "~0.2.1",
     "karma-story-reporter": "~0.2.2",
-    "karma-coverage": "~0.1.5"
+    "karma-coverage": "~0.1.5",
+    "grunt-cli": "~0.1.13",
+    "bower": "~1.2.8"
   }
 }
