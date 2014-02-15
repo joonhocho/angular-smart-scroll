@@ -8,6 +8,7 @@ Smart infinite scroll directive for Angular.js that is customizable to support n
 [![githalytics.com alpha][Git Anlytics img]][Git Anlytics]
 <!-- [![Code Climate][Code Climate img]][Code Climate] -->
 
+
 ## Smart Infinite Scroll for AngularJS
 [View examples!][Examples]
 
