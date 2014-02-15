@@ -29,60 +29,71 @@ angular.module('jun.smartScroll', [])
 			return null;
 		}
 
+		function createOnScroll(scope, viewport) {
+			return function () {
+				if (scope.disabled) {
+					return;
+				}
+
+				var scrollHeight = viewport[0].scrollHeight,
+					scrollTop = viewport.scrollTop(),
+					height = viewport.height(),
+					scrollBottom = scrollTop + height,
+					remaining = scrollHeight - scrollBottom,
+					epsilon = 0.9,
+					scrollThreshold = height * (scope.distance || 0) + epsilon;
+
+				if (remaining <= scrollThreshold) {
+					scope.onScrollNext({
+						scrollHeight: scrollHeight,
+						scrollTop: scrollTop,
+						height: height,
+						scrollBottom: scrollBottom,
+						remaining: remaining
+					});
+				}
+			};
+		}
+
+		function getThrottled(scope, onScroll) {
+			var _ = $window._;
+			if (!(_ && typeof _.throttle === 'function')) {
+				return onScroll;
+			}
+
+			var options = scope.throttle,
+				wait = 300;
+			switch (typeof options) {
+			case 'number':
+				wait = options;
+				break;
+			case 'object':
+				if (options) {
+					if (options.wait != null) {
+						wait = options.wait;
+					}
+					return _.throttle(onScroll, wait, options);
+				}
+			}
+			return _.throttle(onScroll, wait);
+		}
+
 		return {
-			link: function (scope, elem, attrs) {
+			scope: {
+				distance: '=scrollDistance',
+				disabled: '=scrollDisabled',
+				onScrollNext: '&',
+				throttle: '=scrollThrottle'
+			},
+			link: function (scope, elem /*, attrs*/ ) {
 				var viewport = getFirstParent(elem[0], hasScroll) || $window;
 				viewport = angular.element(viewport);
 
-				var scrollDistance = 0;
-				if (attrs.infiniteScrollDistance) {
-					scope.$watch(attrs.infiniteScrollDistance, function (value) {
-						scrollDistance = parseInt(value, 10);
-					});
-				}
+				var onScroll = createOnScroll(scope, viewport),
+					throttled = getThrottled(scope, onScroll);
 
-				var enabled = true,
-					checkWhenEnabled = false,
-					handler;
-				if (attrs.infiniteScrollDisabled) {
-					scope.$watch(attrs.infiniteScrollDisabled, function (value) {
-						enabled = !value;
-						if (enabled && checkWhenEnabled) {
-							checkWhenEnabled = false;
-							handler();
-						}
-					});
-				}
-
-				handler = function () {
-					var scrollHeight = viewport[0].scrollHeight,
-						viewportHeight = viewport.height(),
-						scrollBottom = viewport.scrollTop() + viewportHeight,
-						remaining = scrollHeight - scrollBottom,
-						epsilon = 0.9,
-						scrollThreshold = viewportHeight * scrollDistance + epsilon;
-
-					if (remaining <= scrollThreshold) {
-						if (enabled) {
-							if ($rootScope.$$phase) {
-								scope.$eval(attrs.infiniteScroll);
-							}
-							else {
-								scope.$apply(attrs.infiniteScroll);
-							}
-						}
-						else {
-							checkWhenEnabled = true;
-						}
-					}
-				};
-
-				var throttled = handler,
-					throttleWait = 300,
-					_ = $window._;
-				if (_ && typeof _.throttle === 'function') {
-					throttled = _.throttle(handler, throttleWait);
-				}
+				scope.$watch('distance', onScroll);
+				scope.$watch('disabled', onScroll);
 
 				viewport.on('scroll', throttled);
 
@@ -90,12 +101,7 @@ angular.module('jun.smartScroll', [])
 					viewport.off('scroll', throttled);
 				});
 
-				$timeout(function () {
-					var check = attrs.infiniteScrollImmediateCheck;
-					if (!check || (check && scope.$eval(check))) {
-						handler();
-					}
-				}, 0);
+				$timeout(onScroll);
 			}
 		};
 	}
