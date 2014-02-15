@@ -29,6 +29,23 @@ angular.module('jun.smartScroll', [])
 			return null;
 		}
 
+		function getDistance(distance, height) {
+			if (!distance) {
+				return 0;
+			}
+			if (typeof distance === 'string') {
+				if (endsWith(distance, '%')) {
+					return parseInt(distance, 10) / 100 * height;
+				}
+				return parseInt(distance, 10);
+			}
+			return distance;
+		}
+
+		function endsWith(str, suffix) {
+			return str === suffix || str.indexOf(suffix, str.length - suffix.length) !== -1;
+		}
+
 		function createOnScroll(scope, viewport) {
 			return function () {
 				if (scope.disabled) {
@@ -41,7 +58,7 @@ angular.module('jun.smartScroll', [])
 					scrollBottom = scrollTop + height,
 					remaining = scrollHeight - scrollBottom,
 					epsilon = 0.9,
-					scrollThreshold = height * (scope.distance || 0) + epsilon;
+					scrollThreshold = getDistance(scope.distance, height) + epsilon;
 
 				if (remaining <= scrollThreshold) {
 					scope.next({
