@@ -1,5 +1,5 @@
 /* jshint node: true, camelcase: false */
-/* global angular, inject, describe, it, beforeEach, afterEach, spyOn, expect */
+/* global angular, inject, describe, it, beforeEach, afterEach, spyOn, expect, runs, waitsFor */
 describe('Module: jun.smartScroll', function () {
 	'use strict';
 
@@ -97,6 +97,7 @@ describe('Module: jun.smartScroll', function () {
 				scope.getNext = function () {};
 				scope.scrollDistance = 0;
 				scope.scrollDisabled = false;
+				scope.scrollThrottle = 1;
 			};
 
 		function prepare() {
@@ -116,6 +117,7 @@ describe('Module: jun.smartScroll', function () {
 					' scroll-next="getNext(scrollHeight, scrollTop, height, scrollBottom, remaining)"' +
 					' scroll-distance="scrollDistance"' +
 					' scroll-disabled="scrollDisabled"' +
+					' scroll-throttle="scrollThrottle"' +
 					'>' +
 					'<div class="large-content"></div>' +
 					'</div>';
@@ -129,11 +131,31 @@ describe('Module: jun.smartScroll', function () {
 			$timeout.flush();
 			expect(scope.getNext).not.toHaveBeenCalled();
 
-			el.scrollTop(5000);
-			expect(scope.getNext).not.toHaveBeenCalled();
+			var scrolled = false;
+			el.scroll(function () {
+				scrolled = true;
+			});
 
-			el.scrollTop(10000);
-			expect(scope.getNext).toHaveBeenCalled();
+			el.scrollTop(5000);
+
+			waitsFor(function () {
+				return scrolled;
+			}, 'should be scrolled', 500);
+
+			runs(function () {
+				expect(scope.getNext).not.toHaveBeenCalled();
+
+				scrolled = false;
+				el.scrollTop(10000);
+
+				waitsFor(function () {
+					return scrolled;
+				}, 'should be scrolled', 500);
+
+				runs(function () {
+					expect(scope.getNext).toHaveBeenCalled();
+				});
+			});
 		});
 	});
 
