@@ -1,5 +1,5 @@
 /* jshint node: true, camelcase: false */
-/* global angular, inject, describe, it, beforeEach, afterEach, spyOn, expect, runs, waitsFor */
+/* global angular, inject, jasmine, describe, it, beforeEach, afterEach, expect, runs, waitsFor */
 describe('Module: jun.smartScroll', function () {
 	'use strict';
 
@@ -24,65 +24,65 @@ describe('Module: jun.smartScroll', function () {
 		$timeout = _$timeout_;
 	}));
 
-	describe('Immediate next call', function () {
+	afterEach(function () {
+		el.remove();
+		scope.$destroy();
+		el = content = scope = null;
+	});
 
-		var getHtml,
-			initScope = function () {
-				scope.getNext = function () {};
-				scope.scrollDistance = 0;
-				scope.scrollDisabled = false;
-			};
+	function init(html, initScope) {
+		el = angular.element(html).appendTo($body);
+		content = el.find('.content');
+		scope = $rootScope.$new();
 
-		function prepare() {
-			el = angular.element(getHtml()).appendTo($body);
-			content = el.find('.content');
+		initScope(scope);
 
-			scope = $rootScope.$new();
-			initScope();
+		$compile(el)(scope);
 
-			$compile(el)(scope);
-			scope.$digest();
-		}
+		// IMPORTANT: $digest fires scroll events
+		//scope.$digest();
+	}
 
-		afterEach(function () {
-			el.remove();
-			scope.$destroy();
-		});
+	describe('Immediate "next" call:', function () {
 
-		it('should call `next` callback on init if necessary', function () {
-			getHtml = function () {
-				return '<div class="scroller" smart-scroll' +
-					' scroll-next="getNext(scrollHeight, scrollTop, height, scrollBottom, remaining)"' +
-					' scroll-distance="scrollDistance"' +
-					' scroll-disabled="scrollDisabled"' +
-					'>' +
-					'<div class="content"></div>' +
-					'</div>';
-			};
+		it('call "next" on init if necessary', function () {
+			init(
+				'<div class="scroller" smart-scroll' +
+				' scroll-next="getNext(scrollHeight, scrollTop, height, scrollBottom, remaining)"' +
+				' scroll-distance="scrollDistance"' +
+				' scroll-disabled="scrollDisabled"' +
+				'>' +
+				'<div class="content"></div>' +
+				'</div>',
+				function (scope) {
+					scope.getNext = jasmine.createSpy();
+					scope.scrollDistance = 0;
+					scope.scrollDisabled = false;
+				}
+			);
 
-			prepare();
-
-			spyOn(scope, 'getNext').andCallThrough();
 			expect(scope.getNext).not.toHaveBeenCalled();
 
 			$timeout.flush();
 			expect(scope.getNext).toHaveBeenCalled();
 		});
 
-		it('should not call `next` callback on init if unnecessary', function () {
-			getHtml = function () {
-				return '<div class="scroller" smart-scroll' +
-					' scroll-next="getNext(scrollHeight, scrollTop, height, scrollBottom, remaining)"' +
-					' scroll-distance="scrollDistance"' +
-					' scroll-disabled="scrollDisabled"' +
-					'>' +
-					'<div class="large-content"></div>' +
-					'</div>';
-			};
+		it('do not call "next" on init if not necessary', function () {
+			init(
+				'<div class="scroller" smart-scroll' +
+				' scroll-next="getNext(scrollHeight, scrollTop, height, scrollBottom, remaining)"' +
+				' scroll-distance="scrollDistance"' +
+				' scroll-disabled="scrollDisabled"' +
+				'>' +
+				'<div class="large-content"></div>' +
+				'</div>',
+				function (scope) {
+					scope.getNext = jasmine.createSpy();
+					scope.scrollDistance = 0;
+					scope.scrollDisabled = false;
+				}
+			);
 
-			prepare();
-
-			spyOn(scope, 'getNext').andCallThrough();
 			expect(scope.getNext).not.toHaveBeenCalled();
 
 			$timeout.flush();
@@ -90,42 +90,25 @@ describe('Module: jun.smartScroll', function () {
 		});
 	});
 
-	describe('`next` call', function () {
+	describe('"next" call:', function () {
 
-		var getHtml,
-			initScope = function () {
-				scope.getNext = function () {};
-				scope.scrollDistance = 0;
-				scope.scrollDisabled = false;
-				scope.scrollThrottle = 1;
-			};
+		it('call "next" on scroll only if past threshold', function () {
+			init(
+				'<div class="scroller" smart-scroll' +
+				' scroll-next="getNext(scrollHeight, scrollTop, height, scrollBottom, remaining)"' +
+				' scroll-distance="scrollDistance"' +
+				' scroll-disabled="scrollDisabled"' +
+				' scroll-throttle="scrollThrottle"' +
+				'>' +
+				'<div class="large-content"></div>' +
+				'</div>',
+				function (scope) {
+					scope.getNext = jasmine.createSpy();
+					scope.scrollDistance = 0;
+					scope.scrollDisabled = false;
+				}
+			);
 
-		function prepare() {
-			el = angular.element(getHtml()).appendTo($body);
-			content = el.find('.content');
-
-			scope = $rootScope.$new();
-			initScope();
-
-			$compile(el)(scope);
-			scope.$digest();
-		}
-
-		it('should call `next` on scroll only if past threshold', function () {
-			getHtml = function () {
-				return '<div class="scroller" smart-scroll' +
-					' scroll-next="getNext(scrollHeight, scrollTop, height, scrollBottom, remaining)"' +
-					' scroll-distance="scrollDistance"' +
-					' scroll-disabled="scrollDisabled"' +
-					' scroll-throttle="scrollThrottle"' +
-					'>' +
-					'<div class="large-content"></div>' +
-					'</div>';
-			};
-
-			prepare();
-
-			spyOn(scope, 'getNext').andCallThrough();
 			expect(scope.getNext).not.toHaveBeenCalled();
 
 			$timeout.flush();
@@ -159,45 +142,24 @@ describe('Module: jun.smartScroll', function () {
 		});
 	});
 
-	describe('Disabled', function () {
+	describe('Disabled:', function () {
 
-		var getHtml,
-			initScope = function () {
-				scope.getNext = function () {};
-				scope.scrollDistance = 0;
-				scope.scrollDisabled = true;
-			};
+		it('should not call "next" when disabled', function () {
+			init(
+				'<div class="scroller" smart-scroll' +
+				' scroll-next="getNext(scrollHeight, scrollTop, height, scrollBottom, remaining)"' +
+				' scroll-distance="scrollDistance"' +
+				' scroll-disabled="scrollDisabled"' +
+				'>' +
+				'<div class="content"></div>' +
+				'</div>',
+				function (scope) {
+					scope.getNext = jasmine.createSpy();
+					scope.scrollDistance = 0;
+					scope.scrollDisabled = true;
+				}
+			);
 
-		function prepare() {
-			el = angular.element(getHtml()).appendTo($body);
-			content = el.find('.content');
-
-			scope = $rootScope.$new();
-			initScope();
-
-			$compile(el)(scope);
-			scope.$digest();
-		}
-
-		afterEach(function () {
-			el.remove();
-			scope.$destroy();
-		});
-
-		it('should not call `next` when disabled', function () {
-			getHtml = function () {
-				return '<div class="scroller" smart-scroll' +
-					' scroll-next="getNext(scrollHeight, scrollTop, height, scrollBottom, remaining)"' +
-					' scroll-distance="scrollDistance"' +
-					' scroll-disabled="scrollDisabled"' +
-					'>' +
-					'<div class="content"></div>' +
-					'</div>';
-			};
-
-			prepare();
-
-			spyOn(scope, 'getNext').andCallThrough();
 			expect(scope.getNext).not.toHaveBeenCalled();
 
 			$timeout.flush();

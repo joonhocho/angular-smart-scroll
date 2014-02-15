@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<testsuites>
+  <testsuite name="PhantomJS 1.9.7 (Mac OS X)" package="" timestamp="2014-02-15T22:21:37" id="0" hostname="Joons-MacBook-Pro.local" tests="4" errors="0" failures="2" time="0.047">
+    <properties>
+      <property name="browser.fullName" value="Mozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/534.34 (KHTML, like Gecko) PhantomJS/1.9.7 Safari/534.34"/>
+    </properties>
+    <testcase name="should call `next` callback on init if necessary" time="0.017" classname="PhantomJS 1.9.7 (Mac OS X).Module: jun_smartScroll Immediate next call">
+      <failure type="">Expected spy getNext to have been called.
+</failure>
+    </testcase>
+    <testcase name="should not call `next` callback on init if unnecessary" time="0.003" classname="PhantomJS 1.9.7 (Mac OS X).Module: jun_smartScroll Immediate next call"/>
+    <testcase name="should call `next` on scroll only if past threshold" time="0.024" classname="PhantomJS 1.9.7 (Mac OS X).Module: jun_smartScroll `next` call">
+      <failure type="">Expected spy getNext to have been called.
+</failure>
+    </testcase>
+    <testcase name="should not call `next` when disabled" time="0.003" classname="PhantomJS 1.9.7 (Mac OS X).Module: jun_smartScroll Disabled"/>
+    <system-out><![CDATA[
+]]></system-out>
+    <system-err/>
+  </testsuite>
+</testsuites>

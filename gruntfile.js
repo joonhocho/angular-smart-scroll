@@ -68,9 +68,11 @@ module.exports = function (grunt) {
 				configFile: '<%= v.test %>/<%= v.karmaConfig %>'
 			},
 			test: {
-				// default
+				// defaults
 			},
 			dev: {
+				browsers: ['PhantomJS', 'Chrome'],
+				reporters: ['progress', 'coverage'],
 				singleRun: false
 			},
 			bdd: {

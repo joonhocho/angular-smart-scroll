@@ -3,6 +3,12 @@ module.exports = function (config) {
 	'use strict';
 
 	config.set({
+		// http://karma-runner.github.io/0.8/config/configuration-file.html
+
+		singleRun: true,
+
+		autoWatch: true,
+
 		basePath: '../',
 
 		frameworks: ['jasmine'],
@@ -24,11 +30,6 @@ module.exports = function (config) {
 			'src/**/*.js': ['coverage']
 		},
 
-		// possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-		reporters: ['dots', 'coverage'],
-
-		autoWatch: true,
-
 		// - Chrome
 		// - ChromeCanary
 		// - Firefox
@@ -36,9 +37,12 @@ module.exports = function (config) {
 		// - Safari (only Mac)
 		// - PhantomJS
 		// - IE (only Windows)
-		browsers: ['PhantomJS', 'Chrome', 'Firefox', 'Safari'],
+		browsers: ['PhantomJS', 'Chrome', 'Safari', 'Firefox'],
 
-		singleRun: true,
+		// logLevel: LOG_DEBUG,
+
+		// possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
+		reporters: ['dots', 'coverage'],
 
 		/*
 		plugins: [
