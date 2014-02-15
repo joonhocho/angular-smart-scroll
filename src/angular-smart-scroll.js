@@ -44,7 +44,7 @@ angular.module('jun.smartScroll', [])
 					scrollThreshold = height * (scope.distance || 0) + epsilon;
 
 				if (remaining <= scrollThreshold) {
-					scope.onScrollNext({
+					scope.next({
 						scrollHeight: scrollHeight,
 						scrollTop: scrollTop,
 						height: height,
@@ -82,8 +82,8 @@ angular.module('jun.smartScroll', [])
 			scope: {
 				distance: '=scrollDistance',
 				disabled: '=scrollDisabled',
-				onScrollNext: '&',
-				throttle: '=scrollThrottle'
+				throttle: '=scrollThrottle',
+				next: '&scrollNext'
 			},
 			link: function (scope, elem /*, attrs*/ ) {
 				var viewport = getFirstParent(elem[0], hasScroll) || $window;
