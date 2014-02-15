@@ -26,21 +26,12 @@ describe('Module: jun.smartScroll', function () {
 
 	describe('Immediate next call', function () {
 
-		var getHtml = function () {
-			return '<div class="scroller" smart-scroll' +
-				' scroll-next="getNext(scrollHeight, scrollTop, height, scrollBottom, remaining)"' +
-				' scroll-distance="scrollDistance"' +
-				' scroll-disabled="scrollDisabled"' +
-				'>' +
-				'<div class="content"></div>' +
-				'</div>';
-		};
-
-		var initScope = function () {
-			scope.getNext = function () {};
-			scope.scrollDistance = 0;
-			scope.scrollDisabled = false;
-		};
+		var getHtml,
+			initScope = function () {
+				scope.getNext = function () {};
+				scope.scrollDistance = 0;
+				scope.scrollDisabled = false;
+			};
 
 		function prepare() {
 			el = angular.element(getHtml()).appendTo($body);
@@ -82,6 +73,48 @@ describe('Module: jun.smartScroll', function () {
 					' scroll-disabled="scrollDisabled"' +
 					'>' +
 					'<div class="large-content"></div>' +
+					'</div>';
+			};
+			prepare();
+			spyOn(scope, 'getNext').andCallThrough();
+			expect(scope.getNext).not.toHaveBeenCalled();
+			$timeout.flush();
+			expect(scope.getNext).not.toHaveBeenCalled();
+		});
+	});
+
+	describe('Disabled', function () {
+
+		var getHtml,
+			initScope = function () {
+				scope.getNext = function () {};
+				scope.scrollDistance = 0;
+				scope.scrollDisabled = true;
+			};
+
+		function prepare() {
+			el = angular.element(getHtml()).appendTo($body);
+			content = el.find('.content');
+
+			scope = $rootScope.$new();
+			initScope();
+
+			$compile(el)(scope);
+			scope.$digest();
+		}
+
+		afterEach(function () {
+			el.remove();
+		});
+
+		it('should not call `next` when disabled', function () {
+			getHtml = function () {
+				return '<div class="scroller" smart-scroll' +
+					' scroll-next="getNext(scrollHeight, scrollTop, height, scrollBottom, remaining)"' +
+					' scroll-distance="scrollDistance"' +
+					' scroll-disabled="scrollDisabled"' +
+					'>' +
+					'<div class="content"></div>' +
 					'</div>';
 			};
 			prepare();
