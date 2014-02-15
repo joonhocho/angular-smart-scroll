@@ -13,15 +13,16 @@ module.exports = function (config) {
 			'bower_components/angular/angular.js',
 			'bower_components/angular-mocks/angular-mocks.js',
 			'src/**/*.js',
-			'test/**/**.js',
-			'!test/karma.conf.js'
+			'test/**/**.js'
+		],
+
+		exclude: [
+			'test/karma.conf.js'
 		],
 
 		preprocessors: {
 			'src/**/*.js': ['coverage']
 		},
-
-		exclude: [],
 
 		// possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
 		reporters: ['dots', 'coverage'],
