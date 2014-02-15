@@ -32,9 +32,7 @@
   },
   "homepage": "https://github.com/joonho1101/angular-smart-scroll",
   "devDependencies": {
-    "bower": "~1.2.8",
     "grunt": "~0.4.2",
-    "grunt-cli": "~0.1.13",
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-uglify": "~0.3.2",
     "grunt-contrib-clean": "~0.5.0",
