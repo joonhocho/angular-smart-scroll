@@ -29,9 +29,9 @@
   "author": "Joon Ho Cho <joonho1101@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/joonho1101/angular-infinite-scroll/issues"
+    "url": "https://github.com/joonho1101/angular-smart-scroll/issues"
   },
-  "homepage": "https://github.com/joonho1101/angular-infinite-scroll",
+  "homepage": "https://github.com/joonho1101/angular-smart-scroll",
   "devDependencies": {
     "bower": "~1.2.8",
     "grunt": "~0.4.2",
