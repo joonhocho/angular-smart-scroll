@@ -4,4 +4,6 @@ node_js:
   - "0.8"
 before_script:
   - npm install -g bower grunt-cli
+  - ls bower_components
+  - ls bower_components/jquery
   - bower install
