@@ -9,7 +9,7 @@ module.exports = function (config) {
 
 		files: [
 			'test/angular-smart-scroll.spec.css',
-			'bower_components/jquery/jquery.js',
+			'bower_components/jquery/dist/jquery.js',
 			'bower_components/angular/angular.js',
 			'bower_components/angular-mocks/angular-mocks.js',
 			'src/**/*.js',
