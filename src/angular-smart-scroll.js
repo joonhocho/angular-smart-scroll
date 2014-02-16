@@ -54,7 +54,7 @@ angular.module('jun.smartScroll', [])
 
 				var scrollHeight = viewport[0].scrollHeight,
 					scrollTop = viewport.scrollTop(),
-					height = viewport.height(),
+					height = viewport.innerHeight(),
 					scrollBottom = scrollTop + height,
 					remaining = scrollHeight - scrollBottom,
 					epsilon = 0.9,

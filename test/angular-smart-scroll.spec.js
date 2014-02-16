@@ -15,6 +15,9 @@ describe('Module: jun.smartScroll', function () {
 		content,
 		scope;
 
+	var SCROLL_WIDTH = 15,
+		MAX_SCROLL = Math.pow(2, 20);
+
 	beforeEach(inject(function (_$rootScope_, _$compile_, _$window_, _$document_, _$timeout_) {
 		$rootScope = _$rootScope_;
 		$compile = _$compile_;
@@ -129,7 +132,7 @@ describe('Module: jun.smartScroll', function () {
 				expect(scope.getNext).not.toHaveBeenCalled();
 
 				scrolled = false;
-				el.scrollTop(10000);
+				el.scrollTop(MAX_SCROLL);
 
 				waitsFor(function () {
 					return scrolled;
@@ -137,6 +140,31 @@ describe('Module: jun.smartScroll', function () {
 
 				runs(function () {
 					expect(scope.getNext).toHaveBeenCalled();
+
+					scope.getNext = jasmine.createSpy();
+
+					scrolled = false;
+					var max = el.scrollTop();
+					el.scrollTop(max - SCROLL_WIDTH - 1);
+
+					waitsFor(function () {
+						return scrolled;
+					}, 'should be scrolled', 500);
+
+					runs(function () {
+						expect(scope.getNext).not.toHaveBeenCalled();
+
+						scrolled = false;
+						el.scrollTop(max - SCROLL_WIDTH);
+
+						waitsFor(function () {
+							return scrolled;
+						}, 'should be scrolled', 500);
+
+						runs(function () {
+							expect(scope.getNext).toHaveBeenCalled();
+						});
+					});
 				});
 			});
 		});
