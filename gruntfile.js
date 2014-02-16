@@ -71,7 +71,7 @@ module.exports = function (grunt) {
 				// defaults
 			},
 			dev: {
-				browsers: ['PhantomJS', 'Chrome'],
+				//browsers: ['PhantomJS', 'Chrome', 'Chrome'],
 				reporters: ['progress', 'coverage'],
 				singleRun: false
 			},

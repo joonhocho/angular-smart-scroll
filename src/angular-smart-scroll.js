@@ -5,7 +5,8 @@ angular.module('jun.smartScroll', [])
 	'$rootScope', '$window', '$timeout',
 	function ($rootScope, $window, $timeout) {
 		'use strict';
-		var $ = angular.element;
+		var $ = angular.element,
+			html;
 
 		function hasScroll(el) {
 			if (el.style) {
@@ -46,13 +47,20 @@ angular.module('jun.smartScroll', [])
 			return str === suffix || str.indexOf(suffix, str.length - suffix.length) !== -1;
 		}
 
+		function getScrollHeight(el) {
+			if (el === $window) {
+				el = html || (html = $('html')[0]);
+			}
+			return el.scrollHeight;
+		}
+
 		function createOnScroll(scope, viewport) {
 			return function () {
 				if (scope.disabled) {
 					return;
 				}
 
-				var scrollHeight = viewport[0].scrollHeight,
+				var scrollHeight = getScrollHeight(viewport[0]),
 					scrollTop = viewport.scrollTop(),
 					height = viewport.innerHeight(),
 					scrollBottom = scrollTop + height,

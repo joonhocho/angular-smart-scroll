@@ -170,6 +170,53 @@ describe('Module: jun.smartScroll', function () {
 		});
 	});
 
+	describe('Window scroll:', function () {
+
+		it('call "next" on scroll only if past threshold', function () {
+			init(
+				'<div smart-scroll' +
+				' scroll-next="getNext(scrollHeight, scrollTop, height, scrollBottom, remaining)"' +
+				' scroll-distance="scrollDistance"' +
+				' scroll-disabled="scrollDisabled"' +
+				'>' +
+				'<div class="content"></div>' +
+				'</div>',
+				function (scope) {
+					scope.getNext = jasmine.createSpy();
+					scope.scrollDistance = 0;
+					scope.scrollDisabled = false;
+				}
+			);
+
+			expect(scope.getNext).not.toHaveBeenCalled();
+
+			$timeout.flush();
+			expect(scope.getNext).toHaveBeenCalled();
+		});
+
+		it('do not call "next" on init if not necessary', function () {
+			init(
+				'<div smart-scroll' +
+				' scroll-next="getNext(scrollHeight, scrollTop, height, scrollBottom, remaining)"' +
+				' scroll-distance="scrollDistance"' +
+				' scroll-disabled="scrollDisabled"' +
+				'>' +
+				'<div class="large-content"></div>' +
+				'</div>',
+				function (scope) {
+					scope.getNext = jasmine.createSpy();
+					scope.scrollDistance = 0;
+					scope.scrollDisabled = false;
+				}
+			);
+
+			expect(scope.getNext).not.toHaveBeenCalled();
+
+			$timeout.flush();
+			expect(scope.getNext).not.toHaveBeenCalled();
+		});
+	});
+
 	describe('Disabled:', function () {
 
 		it('should not call "next" when disabled', function () {
