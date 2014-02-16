@@ -1,12 +1,13 @@
 html {
+	width: 100px;
 	height: 1000px;
 	overflow: scroll;
 }
 
 .scroller {
-	overflow: scroll;
 	width: 100px;
 	height: 1000px;
+	overflow: scroll;
 }
 
 .content {
