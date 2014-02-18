@@ -108,11 +108,16 @@ angular.module('jun.smartScroll', [])
 				distance: '=scrollDistance',
 				disabled: '=scrollDisabled',
 				throttle: '=scrollThrottle',
-				next: '&scrollNext'
+				next: '&scrollNext',
+				data: '=scrollData'
 			},
 			link: function (scope, elem /*, attrs*/ ) {
 				var viewport = getFirstParent(elem[0], hasScroll) || $window;
 				viewport = angular.element(viewport);
+
+				if (scope.data) {
+					scope.data.viewport = viewport;
+				}
 
 				var onScroll = createOnScroll(scope, viewport),
 					throttled = getThrottled(scope, onScroll);
@@ -120,7 +125,7 @@ angular.module('jun.smartScroll', [])
 				scope.$watch('distance', onScroll);
 				scope.$watch('disabled', onScroll);
 
-				viewport.scroll(throttled);
+				viewport.on('scroll', throttled);
 
 				scope.$on('$destroy', function () {
 					viewport.off('scroll', throttled);
