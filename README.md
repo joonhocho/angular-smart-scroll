@@ -78,22 +78,22 @@ Feel free to create a pull request with unit tests with 100% code coverage!
 
 Copyright (c) 2014 Joon Ho Cho
 
-[Build Status]: https://travis-ci.org/joonho1101/angular-smart-scroll
-[Build Status img]: https://travis-ci.org/joonho1101/angular-smart-scroll.png
+[Build Status]: https://travis-ci.org/joonhocho/angular-smart-scroll
+[Build Status img]: https://travis-ci.org/joonhocho/angular-smart-scroll.png
 
-[Dependency Status]: https://gemnasium.com/joonho1101/angular-smart-scroll
-[Dependency Status img]: https://gemnasium.com/joonho1101/angular-smart-scroll.png
+[Dependency Status]: https://gemnasium.com/joonhocho/angular-smart-scroll
+[Dependency Status img]: https://gemnasium.com/joonhocho/angular-smart-scroll.png
 
-[Code Climate]: https://codeclimate.com/github/joonho1101/angular-smart-scroll
-[Code Climate img]: https://codeclimate.com/github/joonho1101/angular-smart-scroll.png
+[Code Climate]: https://codeclimate.com/github/joonhocho/angular-smart-scroll
+[Code Climate img]: https://codeclimate.com/github/joonhocho/angular-smart-scroll.png
 
-[Coverage Status]: https://coveralls.io/r/joonho1101/angular-smart-scroll
-[Coverage Status img]: https://coveralls.io/repos/joonho1101/angular-smart-scroll/badge.png
+[Coverage Status]: https://coveralls.io/r/joonhocho/angular-smart-scroll
+[Coverage Status img]: https://coveralls.io/repos/joonhocho/angular-smart-scroll/badge.png
 
-[Git Anlytics]: http://githalytics.com/joonho1101/angular-smart-scroll
-[Git Anlytics img]: https://cruel-carlota.pagodabox.com/fda90a3a2ce7e9e7339348f8b505945f
+[Git Anlytics]: http://githalytics.com/joonhocho/angular-smart-scroll
+[Git Anlytics img]: https://cruel-carlota.pagodabox.com/032c21f7bd79ea2b4615d1b688fd71ab
 
-[Examples]: http://htmlpreview.github.io/?https://github.com/joonho1101/angular-smart-scroll/blob/master/examples/index.html
+[Examples]: http://htmlpreview.github.io/?https://github.com/joonhocho/angular-smart-scroll/blob/master/examples/index.html
 
 [Angular.js]: https://github.com/angular/angular.js
 [jQuery]: https://github.com/jquery/jquery

@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/joonho1101/angular-smart-scroll.git"
+    "url": "https://github.com/joonhocho/angular-smart-scroll.git"
   },
   "keywords": [
     "smart",
@@ -29,9 +29,9 @@
   "author": "Joon Ho Cho <joonho1101@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/joonho1101/angular-smart-scroll/issues"
+    "url": "https://github.com/joonhocho/angular-smart-scroll/issues"
   },
-  "homepage": "https://github.com/joonho1101/angular-smart-scroll",
+  "homepage": "https://github.com/joonhocho/angular-smart-scroll",
   "devDependencies": {
     "grunt": "~0.4.2",
     "grunt-contrib-concat": "~0.3.0",
