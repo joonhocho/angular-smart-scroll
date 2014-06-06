@@ -2,21 +2,22 @@
 angular.module('jun.smartScroll', [])
 
 .directive('smartScroll', [
-  '$rootScope', '$window', '$timeout',
-  function ($rootScope, $window, $timeout) {
+  '$window', '$timeout',
+  function ($window, $timeout) {
     'use strict';
+
     var $ = angular.element,
-      html;
+      EPSILON = 0.9;
 
     function hasScroll(el) {
       if (el.style) {
         var $el = $(el);
-        return isValueScroll($el.css('overflow')) || isValueScroll($el.css('overflow-y'));
+        return isScrollable($el.css('overflow')) || isScrollable($el.css('overflow-x')) || isScrollable($el.css('overflow-y'));
       }
       return false;
     }
 
-    function isValueScroll(v) {
+    function isScrollable(v) {
       return v === 'scroll' || v === 'auto';
     }
 
@@ -30,131 +31,154 @@ angular.module('jun.smartScroll', [])
       return null;
     }
 
-    function getDistance(distance, height) {
+    function parseDistance(distance, height) {
       if (!distance) {
         return 0;
       }
-      if (typeof distance === 'string') {
-        if (endsWith(distance, '%')) {
-          return parseInt(distance, 10) / 100 * height;
-        }
-        return parseInt(distance, 10);
+      if (typeof distance === 'number') {
+        return distance;
       }
-      return distance;
+      if (distance.charAt(distance.length - 1) === '%') {
+        return parseInt(distance, 10) / 100 * height;
+      }
+      return parseInt(distance, 10);
     }
 
-    function endsWith(str, suffix) {
-      return str === suffix || str.indexOf(suffix, str.length - suffix.length) !== -1;
+    function getScrollThreshold(distance, viewportLength) {
+      return parseDistance(distance, viewportLength) + EPSILON;
     }
 
-    function getScrollHeight(el) {
+    function onScrollTop(opts) {
+      var distance = opts.distanceTop;
+      if (distance == null) {
+        return opts.scrollTop();
+      }
+
+      var viewport = opts.viewport,
+        remaining = viewport.scrollTop(),
+        viewportLength = viewport.innerHeight();
+      if (remaining <= getScrollThreshold(distance, viewportLength)) {
+        return opts.scrollTop();
+      }
+    }
+
+    function onScrollLeft(opts) {
+      var distance = opts.distanceLeft;
+      if (distance == null) {
+        return opts.scrollLeft();
+      }
+
+      var viewport = opts.viewport,
+        remaining = viewport.scrollLeft(),
+        viewportLength = viewport.innerWidth();
+      if (remaining <= getScrollThreshold(distance, viewportLength)) {
+        opts.scrollLeft();
+      }
+    }
+
+    function getRemainingBottomOrRight(scrollPos, viewportLength, scrollLength) {
+      return scrollLength - (scrollPos + viewportLength);
+    }
+
+    function getHtml(opts) {
+      return opts.html || (opts.html = $('html')[0]);
+    }
+
+    function getBody(opts) {
+      return opts.body || (opts.body = $('body')[0]);
+    }
+
+    function getScrollWidth(el, opts) {
       if (el === $window) {
-        el = html || (html = $('html')[0]);
+        return getHtml(opts).scrollWidth || getBody(opts).scrollWidth;
+      }
+      return el.scrollWidth;
+    }
+
+    function getScrollHeight(el, opts) {
+      if (el === $window) {
+        return getHtml(opts).scrollHeight || getBody(opts).scrollHeight;
       }
       return el.scrollHeight;
     }
 
-    function onScrollUp(scope, viewport) {
-      var scrollTop = viewport.scrollTop(),
-        remaining = scrollTop,
-        epsilon = 0.9,
-        height = viewport.innerHeight(),
-        scrollThreshold = getDistance(scope.distance, height) + epsilon;
-      if (remaining <= scrollThreshold) {
-        scope.next({
-          scrollTop: scrollTop,
-          height: height,
-          remaining: remaining
-        });
+    function onScrollBottom(opts) {
+      var distance = opts.distanceBottom;
+      if (distance == null) {
+        return opts.scrollBottom();
+      }
+
+      var viewport = opts.viewport,
+        scrollPos = viewport.scrollTop(),
+        viewportLength = viewport.innerHeight(),
+        scrollLength = getScrollHeight(viewport[0], opts),
+        remaining = getRemainingBottomOrRight(scrollPos, viewportLength, scrollLength);
+      if (remaining <= getScrollThreshold(distance, viewportLength)) {
+        return opts.scrollBottom();
       }
     }
 
-    function onScrollDown(scope, viewport) {
-      var scrollHeight = getScrollHeight(viewport[0]),
-        scrollTop = viewport.scrollTop(),
-        height = viewport.innerHeight(),
-        scrollBottom = scrollTop + height,
-        remaining = scrollHeight - scrollBottom,
-        epsilon = 0.9,
-        scrollThreshold = getDistance(scope.distance, height) + epsilon;
-      if (remaining <= scrollThreshold) {
-        scope.next({
-          scrollHeight: scrollHeight,
-          scrollTop: scrollTop,
-          height: height,
-          scrollBottom: scrollBottom,
-          remaining: remaining
-        });
+    function onScrollRight(opts) {
+      var distance = opts.distanceRight;
+      if (distance == null) {
+        return opts.scrollRight();
+      }
+
+      var viewport = opts.viewport,
+        scrollPos = viewport.scrollLeft(),
+        viewportLength = viewport.innerWidth(),
+        scrollLength = getScrollWidth(viewport[0], opts),
+        remaining = getRemainingBottomOrRight(scrollPos, viewportLength, scrollLength);
+      if (remaining <= getScrollThreshold(distance, viewportLength)) {
+        return opts.scrollRight();
       }
     }
 
-    function createOnScroll(scope, viewport) {
+    function getOnScroll(scope) {
       return function () {
-        if (scope.disabled) {
+        var opts = scope.scrollOptions;
+        if (opts.disabled) {
           return;
         }
 
-        if (scope.direction === 'up') {
-          onScrollUp(scope, viewport);
+        if (!opts.disabledTop && opts.scrollTop) {
+          onScrollTop(opts);
         }
-        else {
-          onScrollDown(scope, viewport);
+        if (!opts.disabledBottom && opts.scrollBottom) {
+          onScrollBottom(opts);
         }
-
+        if (!opts.disabledLeft && opts.scrollLeft) {
+          onScrollLeft(opts);
+        }
+        if (!opts.disabledRight && opts.scrollRight) {
+          onScrollRight(opts);
+        }
+        if (opts.scroll) {
+          opts.scroll();
+        }
       };
     }
 
-    function getThrottled(scope, onScroll) {
-      var _ = $window._;
-      if (!(_ && typeof _.throttle === 'function')) {
-        return onScroll;
+    function getViewport(opts, elem) {
+      var viewport = opts.viewport || getFirstParent(elem[0], hasScroll) || $window;
+      if (typeof viewport.on !== 'function') {
+        viewport = $(viewport);
       }
-
-      var options = scope.throttle,
-        wait = 300;
-      switch (typeof options) {
-      case 'number':
-        wait = options;
-        break;
-      case 'object':
-        if (options) {
-          if (options.wait != null) {
-            wait = options.wait;
-          }
-          return _.throttle(onScroll, wait, options);
-        }
-      }
-      return _.throttle(onScroll, wait);
+      return viewport;
     }
 
     return {
-      scope: {
-        distance: '=scrollDistance',
-        disabled: '=scrollDisabled',
-        direction: '=scrollDirection',
-        throttle: '=scrollThrottle',
-        next: '&scrollNext',
-        data: '=scrollData'
-      },
       link: function (scope, elem /*, attrs*/ ) {
-        var viewport = getFirstParent(elem[0], hasScroll) || $window;
-        viewport = angular.element(viewport);
+        var opts = scope.scrollOptions || {};
+        var viewport = opts.viewport = getViewport(opts, elem);
+        var onScroll = getOnScroll(scope);
 
-        if (scope.data) {
-          scope.data.viewport = viewport;
-        }
-
-        var onScroll = createOnScroll(scope, viewport),
-          throttled = getThrottled(scope, onScroll);
-
-        scope.$watch('distance', onScroll);
-        scope.$watch('disabled', onScroll);
-        scope.$watch('direction', onScroll);
-
-        viewport.on('scroll', throttled);
+        viewport.on('scroll', onScroll);
+        viewport.on('resize', onScroll);
 
         scope.$on('$destroy', function () {
-          viewport.off('scroll', throttled);
+          viewport.off('scroll', onScroll);
+          viewport.off('resize', onScroll);
         });
 
         $timeout(onScroll);
