@@ -63,7 +63,7 @@ angular.module('jun.smartScroll', [])
         return;
       }
 
-      var distance = opts.distanceTop;
+      var distance = getOptionVal(opts, 'distanceTop');
       if (distance == null) {
         return opts.onScrollTop();
       }
@@ -85,7 +85,7 @@ angular.module('jun.smartScroll', [])
         return;
       }
 
-      var distance = opts.distanceLeft;
+      var distance = getOptionVal(opts, 'distanceLeft');
       if (distance == null) {
         return opts.onScrollLeft();
       }
@@ -136,7 +136,7 @@ angular.module('jun.smartScroll', [])
         return;
       }
 
-      var distance = opts.distanceBottom;
+      var distance = getOptionVal(opts, 'distanceBottom');
       if (distance == null) {
         return opts.onScrollBottom();
       }
@@ -160,7 +160,7 @@ angular.module('jun.smartScroll', [])
         return;
       }
 
-      var distance = opts.distanceRight;
+      var distance = getOptionVal(opts, 'distanceRight');
       if (distance == null) {
         return opts.onScrollRight();
       }
@@ -170,25 +170,33 @@ angular.module('jun.smartScroll', [])
       }
     }
 
-    function getOnScroll(scope) {
+    function getOptionVal(opts, name) {
+      var val = opts[name];
+      if (typeof val === 'function') {
+        return opts[name]();
+      }
+      return val;
+    }
+
+    function getOnScroll(opts) {
       return function () {
-        var opts = scope.scrollOptions;
-        if (opts.disabled) {
+        if (getOptionVal(opts, 'disabled')) {
           return;
         }
 
-        if (!opts.disabledTop && opts.onScrollTop) {
+        if (!getOptionVal(opts, 'disabledTop') && opts.onScrollTop) {
           onScrollTop(opts);
         }
-        if (!opts.disabledBottom && opts.onScrollBottom) {
+        if (!getOptionVal(opts, 'disabledBottom') && opts.onScrollBottom) {
           onScrollBottom(opts);
         }
-        if (!opts.disabledLeft && opts.onScrollLeft) {
+        if (!getOptionVal(opts, 'disabledLeft') && opts.onScrollLeft) {
           onScrollLeft(opts);
         }
-        if (!opts.disabledRight && opts.onScrollRight) {
+        if (!getOptionVal(opts, 'disabledRight') && opts.onScrollRight) {
           onScrollRight(opts);
         }
+
         if (opts.onScroll) {
           opts.onScroll();
         }
@@ -205,9 +213,9 @@ angular.module('jun.smartScroll', [])
 
     return {
       link: function (scope, elem /*, attrs*/ ) {
-        var opts = scope.scrollOptions || {};
-        var viewport = opts.viewport = getViewport(opts, elem);
-        var onScroll = getOnScroll(scope);
+        var opts = scope.smartScroll || {},
+          viewport = opts.viewport = getViewport(opts, elem),
+          onScroll = getOnScroll(opts);
 
         viewport.on('scroll', onScroll);
         viewport.on('resize', onScroll);
