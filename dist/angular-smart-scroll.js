@@ -1,4 +1,4 @@
-/*! angular-smart-scroll - v0.0.2 - 2014-07-08 */
+/*! angular-smart-scroll - v0.0.3 - 2014-07-08 */
 /* global angular */
 angular.module('jun.smartScroll', [])
 
