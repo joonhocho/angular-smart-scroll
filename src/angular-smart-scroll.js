@@ -211,9 +211,18 @@ angular.module('jun.smartScroll', [])
       return viewport;
     }
 
+    function getOption(scope) {
+      while (scope) {
+        if (scope.smartScroll) {
+          return scope.smartScroll;
+        }
+        scope = scope.$parent;
+      }
+    }
+
     return {
       link: function (scope, elem /*, attrs*/ ) {
-        var opts = scope.smartScroll || {},
+        var opts = getOption(scope) || {},
           viewport = opts.viewport = getViewport(opts, elem),
           onScroll = getOnScroll(opts);
 
