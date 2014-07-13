@@ -1,4 +1,4 @@
-/*! angular-smart-scroll - v0.0.3 - 2014-07-08 */
+/*! angular-smart-scroll - v0.0.3 - 2014-07-13 */
 /* global angular */
 angular.module('jun.smartScroll', [])
 
@@ -123,12 +123,24 @@ angular.module('jun.smartScroll', [])
       return el.scrollHeight;
     }
 
-    function onScrollBottom(opts) {
+    function getScrollBottomStats(opts) {
+      opts = opts || this;
       var viewport = opts.viewport,
         scrollPos = viewport.scrollTop(),
         viewportLength = viewport.innerHeight(),
         scrollLength = getScrollHeight(viewport[0], opts),
-        remaining = getRemainingBottomOrRight(scrollPos, viewportLength, scrollLength),
+        remaining = getRemainingBottomOrRight(scrollPos, viewportLength, scrollLength);
+      return {
+        scrollPos: scrollPos,
+        viewportLength: viewportLength,
+        scrollLength: scrollLength,
+        remaining: remaining
+      };
+    }
+
+    function onScrollBottom(opts) {
+      var stats = getScrollBottomStats(opts),
+        remaining = stats.remaining,
         lastRemaining = opts.remainingBottom;
 
       opts.remainingBottom = remaining;
@@ -142,17 +154,29 @@ angular.module('jun.smartScroll', [])
         return opts.onScrollBottom();
       }
 
-      if (remaining <= getScrollThreshold(distance, viewportLength)) {
+      if (remaining <= getScrollThreshold(distance, stats.viewportLength)) {
         return opts.onScrollBottom();
       }
     }
 
-    function onScrollRight(opts) {
+    function getScrollRightStats(opts) {
+      opts = opts || this;
       var viewport = opts.viewport,
         scrollPos = viewport.scrollLeft(),
         viewportLength = viewport.innerWidth(),
         scrollLength = getScrollWidth(viewport[0], opts),
-        remaining = getRemainingBottomOrRight(scrollPos, viewportLength, scrollLength),
+        remaining = getRemainingBottomOrRight(scrollPos, viewportLength, scrollLength);
+      return {
+        scrollPos: scrollPos,
+        viewportLength: viewportLength,
+        scrollLength: scrollLength,
+        remaining: remaining
+      };
+    }
+
+    function onScrollRight(opts) {
+      var stats = getScrollRightStats(opts),
+        remaining = stats.remaining,
         lastRemaining = opts.remainingRight;
 
       opts.remainingRight = remaining;
@@ -166,7 +190,7 @@ angular.module('jun.smartScroll', [])
         return opts.onScrollRight();
       }
 
-      if (remaining <= getScrollThreshold(distance, viewportLength)) {
+      if (remaining <= getScrollThreshold(distance, stats.viewportLength)) {
         return opts.onScrollRight();
       }
     }
@@ -226,6 +250,9 @@ angular.module('jun.smartScroll', [])
         var opts = getOption(scope) || {},
           viewport = opts.viewport = getViewport(opts, elem),
           onScroll = getOnScroll(opts);
+
+        opts.getScrollRightStats = getScrollRightStats;
+        opts.getScrollBottomStats = getScrollBottomStats;
 
         viewport.on('scroll', onScroll);
         viewport.on('resize', onScroll);

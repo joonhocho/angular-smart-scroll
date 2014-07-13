@@ -51,7 +51,7 @@
 	"shadow": false,
 	"sub": false,
 	"supernew": false,
-	"validthis": false,
+	"validthis": true,
 
 	"browser": false,
 	"couch": false,
