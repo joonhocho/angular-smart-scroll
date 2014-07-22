@@ -1,4 +1,4 @@
-/*! angular-smart-scroll - v0.0.3 - 2014-07-13 */
+/*! angular-smart-scroll - v0.0.5 - 2014-07-21 */
 /* global angular */
 angular.module('jun.smartScroll', [])
 
@@ -60,18 +60,17 @@ angular.module('jun.smartScroll', [])
 
       opts.remainingTop = remaining;
 
-      if (!isDirectionalScroll(remaining, lastRemaining)) {
-        return;
+      var prev = !! opts.atTop,
+        atTop = opts.atTop = !remaining;
+      if (prev !== atTop && opts.onAtTop) {
+        opts.onAtTop(atTop);
       }
 
-      var distance = getOptionVal(opts, 'distanceTop');
-      if (distance == null) {
-        return opts.onScrollTop();
-      }
-
-      var viewportLength = viewport.innerHeight();
-      if (remaining <= getScrollThreshold(distance, viewportLength)) {
-        return opts.onScrollTop();
+      if (opts.onScrollTop && isDirectionalScroll(remaining, lastRemaining)) {
+        var distance = getOptionVal(opts, 'distanceTop');
+        if (distance == null || remaining <= getScrollThreshold(distance, viewport.innerHeight())) {
+          opts.onScrollTop();
+        }
       }
     }
 
@@ -82,18 +81,17 @@ angular.module('jun.smartScroll', [])
 
       opts.remainingLeft = remaining;
 
-      if (!isDirectionalScroll(remaining, lastRemaining)) {
-        return;
+      var prev = !! opts.atLeft,
+        atLeft = opts.atLeft = !remaining;
+      if (prev !== atLeft && opts.onAtLeft) {
+        opts.onAtLeft(atLeft);
       }
 
-      var distance = getOptionVal(opts, 'distanceLeft');
-      if (distance == null) {
-        return opts.onScrollLeft();
-      }
-
-      var viewportLength = viewport.innerWidth();
-      if (remaining <= getScrollThreshold(distance, viewportLength)) {
-        opts.onScrollLeft();
+      if (opts.onScrollLeft && isDirectionalScroll(remaining, lastRemaining)) {
+        var distance = getOptionVal(opts, 'distanceLeft');
+        if (distance == null || remaining <= getScrollThreshold(distance, viewport.innerWidth())) {
+          opts.onScrollLeft();
+        }
       }
     }
 
@@ -145,17 +143,17 @@ angular.module('jun.smartScroll', [])
 
       opts.remainingBottom = remaining;
 
-      if (!isDirectionalScroll(remaining, lastRemaining)) {
-        return;
+      var prev = !! opts.atBottom,
+        atBottom = opts.atBottom = !remaining;
+      if (prev !== atBottom && opts.onAtBottom) {
+        opts.onAtBottom(atBottom);
       }
 
-      var distance = getOptionVal(opts, 'distanceBottom');
-      if (distance == null) {
-        return opts.onScrollBottom();
-      }
-
-      if (remaining <= getScrollThreshold(distance, stats.viewportLength)) {
-        return opts.onScrollBottom();
+      if (opts.onScrollBottom && isDirectionalScroll(remaining, lastRemaining)) {
+        var distance = getOptionVal(opts, 'distanceBottom');
+        if (distance == null || remaining <= getScrollThreshold(distance, stats.viewportLength)) {
+          opts.onScrollBottom();
+        }
       }
     }
 
@@ -181,17 +179,17 @@ angular.module('jun.smartScroll', [])
 
       opts.remainingRight = remaining;
 
-      if (!isDirectionalScroll(remaining, lastRemaining)) {
-        return;
+      var prev = !! opts.atRight,
+        atRight = opts.atRight = !remaining;
+      if (prev !== atRight && opts.onAtRight) {
+        opts.onAtRight(atRight);
       }
 
-      var distance = getOptionVal(opts, 'distanceRight');
-      if (distance == null) {
-        return opts.onScrollRight();
-      }
-
-      if (remaining <= getScrollThreshold(distance, stats.viewportLength)) {
-        return opts.onScrollRight();
+      if (opts.onScrollRight && isDirectionalScroll(remaining, lastRemaining)) {
+        var distance = getOptionVal(opts, 'distanceRight');
+        if (distance == null || remaining <= getScrollThreshold(distance, stats.viewportLength)) {
+          opts.onScrollRight();
+        }
       }
     }
 
@@ -209,16 +207,16 @@ angular.module('jun.smartScroll', [])
           return;
         }
 
-        if (!getOptionVal(opts, 'disabledTop') && opts.onScrollTop) {
+        if (!getOptionVal(opts, 'disabledTop')) {
           onScrollTop(opts);
         }
         if (!getOptionVal(opts, 'disabledBottom') && opts.onScrollBottom) {
           onScrollBottom(opts);
         }
-        if (!getOptionVal(opts, 'disabledLeft') && opts.onScrollLeft) {
+        if (!getOptionVal(opts, 'disabledLeft')) {
           onScrollLeft(opts);
         }
-        if (!getOptionVal(opts, 'disabledRight') && opts.onScrollRight) {
+        if (!getOptionVal(opts, 'disabledRight')) {
           onScrollRight(opts);
         }
 
