@@ -140,6 +140,7 @@ angular.module('jun.smartScroll', [])
         remaining = stats.remaining,
         lastRemaining = opts.remainingBottom;
 
+      opts.bottomStats = stats;
       opts.remainingBottom = remaining;
 
       var prev = !! opts.atBottom,
@@ -176,6 +177,7 @@ angular.module('jun.smartScroll', [])
         remaining = stats.remaining,
         lastRemaining = opts.remainingRight;
 
+      opts.rightStats = stats;
       opts.remainingRight = remaining;
 
       var prev = !! opts.atRight,
@@ -209,7 +211,7 @@ angular.module('jun.smartScroll', [])
         if (!getOptionVal(opts, 'disabledTop')) {
           onScrollTop(opts);
         }
-        if (!getOptionVal(opts, 'disabledBottom') && opts.onScrollBottom) {
+        if (!getOptionVal(opts, 'disabledBottom')) {
           onScrollBottom(opts);
         }
         if (!getOptionVal(opts, 'disabledLeft')) {
