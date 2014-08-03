@@ -1,4 +1,4 @@
-/*! angular-smart-scroll - v0.0.6 - 2014-07-31 */
+/*! angular-smart-scroll - v0.0.7 - 2014-08-03 */
 /* global angular */
 angular.module('jun.smartScroll', [])
 
@@ -245,6 +245,16 @@ angular.module('jun.smartScroll', [])
       }
     }
 
+    function hasVerticalScroll() {
+      var stats = getScrollBottomStats(this);
+      return stats.scrollLength > stats.viewportLength;
+    }
+
+    function hasHorizontalScroll() {
+      var stats = getScrollRightStats(this);
+      return stats.scrollLength > stats.viewportLength;
+    }
+
     return {
       link: function (scope, elem /*, attrs*/ ) {
         var opts = getOption(scope) || {},
@@ -253,6 +263,8 @@ angular.module('jun.smartScroll', [])
 
         opts.getScrollRightStats = getScrollRightStats;
         opts.getScrollBottomStats = getScrollBottomStats;
+        opts.hasVerticalScroll = hasVerticalScroll;
+        opts.hasHorizontalScroll = hasHorizontalScroll;
 
         viewport.on('scroll', onScroll);
         viewport.on('resize', onScroll);
